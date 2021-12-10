@@ -4,6 +4,7 @@ import Login from "./LogIn.js";
 import Home from "./Home";
 import Setting from "./Setting";
 import Dashboard from "./Dashboard";
+import Searchbtn from "./Searchbtn";
 const CreateRoutes = () => {
     return (
 
@@ -14,6 +15,8 @@ const CreateRoutes = () => {
             <Route path='home' element={<Home />} />
             <Route path='setting' element={<Setting />} />
             <Route path='dashboard' element={<Dashboard />} />
+            <Route path='searchbtn' element={<Searchbtn />} />
+
 
         </Routes>
     )
