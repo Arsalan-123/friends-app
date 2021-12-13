@@ -1,13 +1,24 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import "antd/dist/antd.css";
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, auth } from "./Firebase"
-import { db } from './Firebase';
+import { createUserWithEmailAndPassword, auth, db } from "./Firebase"
+import { doc, setDoc } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
+import { useState } from 'react';
 
 
 
 const SignUp = () => {
+  var uid = ''
+
+  auth.onAuthStateChanged((user) => {
+    uid = user.uid
+    console.log(uid)
+  })
+  const [username, setausername] = useState("");
+  const [useremail, setauseremail] = useState("");
+  const [userpassword, setuserpassword] = useState("");
+
 
   let navigate = useNavigate();
 
@@ -17,6 +28,11 @@ const SignUp = () => {
     createUserWithEmailAndPassword(auth, values.email, values.password)
       .then(() => {
         createUser();
+        setDoc(doc(db, "users", uid), {
+          username,
+          email: useremail,
+          password: userpassword
+        })
         navigate("/home");
       });
 
@@ -29,17 +45,17 @@ const SignUp = () => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-async function createUser () {
+  async function createUser() {
 
-  
-  const docRef = await addDoc(collection(db,  "users" ), {
-    first: "Ada",
-    last: "Lovelace",
-    born: 1815
-  });
-  console.log("Document written with ID: ", docRef.id);
 
-}
+    const docRef = await addDoc(collection(db, "users"), {
+      first: "Ada",
+      last: "Lovelace",
+      born: 1815
+    });
+    console.log("Document written with ID: ", docRef.id);
+
+  }
 
 
   return (
@@ -59,23 +75,21 @@ async function createUser () {
         <Form.Item
           label="Username "
           name="username"
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[{ required: true, message: 'Please input your username!' }]} onChange={(e) => { setausername(e.target.value) }}
         >
           <Input className="input" />
         </Form.Item>
         <Form.Item
           label="Email"
           name="email"
-          rules={[{ required: true, message: 'Please input your email!' }]}
-        >
+          rules={[{ required: true, message: 'Please input your email!' }]} onChange={(e) => { setauseremail(e.target.value) }}>
           <Input className="input" />
         </Form.Item>
 
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: 'Please input your password!' }]}
-        >
+          rules={[{ required: true, message: 'Please input your password!' }]} onChange={(e) => { setuserpassword(e.target.value) }}>
 
           <Input className="input" />
 
