@@ -5,9 +5,13 @@ import { Image } from 'antd';
 import { Link } from 'react-router-dom';
 import Navs from './Navs';
 import { Upload, message, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { ProfileFilled, UploadOutlined } from '@ant-design/icons';
 import { Form, Input, Checkbox } from 'antd';
 import { useState } from 'react';
+import { Avatar } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import Profilebtn from "./Profilebtn"
+
 
 
 
@@ -38,9 +42,30 @@ const Home = () => {
 
     <div >
       <div>  <Navs />    </div>
+      
       <div>
-        <h1><hamdlerUser /></h1>
-        <h2></h2>
+
+      <div>
+
+
+      </div>
+
+<div className = "profilePic">
+
+<div
+>
+<Profilebtn/>
+<Avatar   size={75} icon={<UserOutlined  /> }  />
+</div>
+
+
+</div>
+    
+
+
+
+
+
       </div>
 
 

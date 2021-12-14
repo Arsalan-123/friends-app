@@ -9,11 +9,11 @@ import { useState } from 'react';
 
 
 const SignUp = () => {
-  var uid = ''
+  let uid = ''
 
-  auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged((user) => {
     uid = user.uid
-    console.log(uid)
+    console.log(uid);
   })
   const [username, setausername] = useState("");
   const [useremail, setauseremail] = useState("");
