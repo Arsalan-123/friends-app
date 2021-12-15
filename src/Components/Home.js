@@ -17,8 +17,9 @@ import Profilebtn from "./Profilebtn"
 
 
 const Home = () => {
+  const [myurl , setUrl] = useState('')
   const onFinish = (values) => {
-    //const file = values.upload[0];
+  
     console.log('Success:', values);
   };
 
@@ -34,9 +35,7 @@ const Home = () => {
     }
     return e && e.fileList;
   };
-
-
-
+ 
 
   return (
 
@@ -50,12 +49,12 @@ const Home = () => {
 
       </div>
 
-<div className = "profilePic">
+<div >
 
 <div
 >
 <Profilebtn/>
-<Avatar   size={75} icon={<UserOutlined  /> }  />
+<Avatar  src="" size={75} icon={<UserOutlined  /> }  />
 </div>
 
 

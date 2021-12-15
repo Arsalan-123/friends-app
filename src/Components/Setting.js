@@ -76,18 +76,6 @@ const Setting = () => {
   }
 
 
-    // const docRef = await addDoc(collection(db, "users", ), {
-    //   first: ausername,
-    //   email: auseremail,
-    //   born: 1815
-    // });
-
-    // console.log("Document written with ID: ", docRef.id);
-
-  
-  // console.log(auth)
-
-
   
 
 
