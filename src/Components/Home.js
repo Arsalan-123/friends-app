@@ -11,13 +11,25 @@ import { useState } from 'react';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import Profilebtn from "./Profilebtn"
+import { doc, setDoc } from "firebase/firestore"; 
+import { auth, db, storage } from "./Firebase"
+import { getDownloadURL, uploadBytesResumable } from '@firebase/storage';
+import { ref } from "@firebase/storage";
+import {  getDocFromCache } from "firebase/firestore";
+
+
+
+
+
+
 
 
 
 
 
 const Home = () => {
-  const [myurl , setUrl] = useState('')
+
+
   const onFinish = (values) => {
   
     console.log('Success:', values);
@@ -35,10 +47,94 @@ const Home = () => {
     }
     return e && e.fileList;
   };
- 
+
+  const [title,settitle] = useState("");
+  const [description, setdescription] = useState(""); 
+  const [image, setImage] = useState(null)
+  const [url, setUrl] = useState('')
+
+  var uid = ''
+  auth.onAuthStateChanged((user) => {
+    uid = user.uid
+      console.log(uid);
+    }
+  ) 
+
+
+
+  async function postSave() {
+                                                                       
+  await setDoc(doc(db, "users", uid), {
+    title,
+    description
+    
+    
+  });
+  }
+
+
+  const handleChange = e => {
+    if (e.target.files[0]) {
+      setImage(e.target.files[0]);
+
+    }
+
+  };
+  const handleUpload = () => {
+  
+    
+
+
+
+
+    const storageRef = ref(storage, `images/${image.name}`)
+
+    const uploadTask = uploadBytesResumable(storageRef, image);
+    
+
+
+    uploadTask.on(
+      'state_changed',
+      snapshot => { },
+      error => {
+        console.log(error);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref).then((
+
+
+
+
+          
+        ) => { console.log('image uploaded', url); setUrl(url)})
+      }
+
+    )
+     
+
+};
+
+
+
+
+
+const postRef = doc(db, "post", uid);
+
+// Get a document, forcing the SDK to fetch from the offline cache.
+try {
+  const doc = getDocFromCache(postRef);
+
+  // Document was found in the cache. If no cached document exists,
+  // an error will be returned to the 'catch' block below.
+  console.log("Cached document data:", doc.getDocFromCache());
+} catch (e) {
+  console.log("Error getting cached document:", e);
+}
+
+
 
   return (
-
+    
     <div >
       <div>  <Navs />    </div>
       
@@ -54,7 +150,7 @@ const Home = () => {
 <div
 >
 <Profilebtn/>
-<Avatar  src="" size={75} icon={<UserOutlined  /> }  />
+<Avatar   size={75} icon={<UserOutlined  /> }  />
 </div>
 
 
@@ -84,14 +180,16 @@ const Home = () => {
           <Form.Item
             label="Post Title "
             name="post title"
-            rules={[{ required: true, message: 'Please input your post titile!' }]}
+            rules={[{ required: true, message: 'Please input your post titile!' }]} onChange={(e) => { settitle(e.target.value) }}
+
           >
             <Input />
           </Form.Item>
           <Form.Item
             label="Description"
             name="description"
-            rules={[{ required: true, message: 'Please input your post description!' }]}
+            rules={[{ required: true, message: 'Please input your post description!' }]} onChange={(e) => { setdescription(e.target.value) }}
+
           >
             <Input />
           </Form.Item>
@@ -106,8 +204,8 @@ const Home = () => {
               maxCount={1}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>, */}
-            <input type="file" onChange={(e) => { console.log(e.target.files); }} />            <Form.Item>
-              <Button className="btn" type="primary" htmlType="submit">
+            <input type="file" onChange={handleChange}/>            <Form.Item>
+              <Button className="btn" type="primary" htmlType="submit" onChange={postSave}  onClick={ handleUpload}>
                 Post
               </Button>
 
@@ -138,8 +236,7 @@ const Home = () => {
 
     </div>
 
-
   )
-}
+          }
 
 export default Home;

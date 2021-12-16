@@ -10,6 +10,10 @@ import { db, app, storage } from './Firebase';
 import { getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { ref } from "@firebase/storage";
 import { getFirestore } from '@firebase/firestore';
+import { doc, updateDoc } from "firebase/firestore";
+import { auth} from "./Firebase"
+
+
 
 
 
@@ -38,9 +42,18 @@ export default function UploadButtons() {
 
   };
   const handleUpload = () => {
+  
+    
+
+
+
+
     const storageRef = ref(storage, `images/${image.name}`)
 
     const uploadTask = uploadBytesResumable(storageRef, image);
+    
+
+
     uploadTask.on(
       'state_changed',
       snapshot => { },
@@ -48,12 +61,19 @@ export default function UploadButtons() {
         console.log(error);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((url) => { console.log('image uploaded', url); setUrl(url)})
+        getDownloadURL(uploadTask.snapshot.ref).then((
+
+
+
+
+          
+        ) => { console.log('image uploaded', url); setUrl(url)})
       }
 
     )
+     
 
-  };
+};
 
   const classes = Profilebtn();
 
@@ -78,3 +98,9 @@ export default function UploadButtons() {
     </div>
   );
 }
+
+
+
+
+
+
