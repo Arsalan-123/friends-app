@@ -30,8 +30,11 @@ const Login = () => {
 
     const handleLogin = () => {
       signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          console.log("sign in");
+      .then((userCredential) => {
+        // Signed in 
+        const user = userCredential.user;
+          localStorage.setItem('currentUser',JSON.stringify(user))
+          console.log(user)
           navigate("/home");
         })
         .catch((error) => {

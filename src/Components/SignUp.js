@@ -3,7 +3,7 @@ import "antd/dist/antd.css";
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, auth, db } from "./Firebase"
 import { doc, setDoc } from "firebase/firestore";
-import { collection, addDoc } from "firebase/firestore";
+// import { collection, addDoc } from "firebase/firestore";
 import { useState } from 'react';
 
 
@@ -11,9 +11,12 @@ import { useState } from 'react';
 const SignUp = () => {
   let uid = ''
 
-auth.onAuthStateChanged((user) => {
-    uid = user.uid
-    console.log(uid);
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      uid = user.uid
+      console.log(uid);
+      console.log(user);
+    }
   })
   const [username, setausername] = useState("");
   const [useremail, setauseremail] = useState("");
@@ -27,7 +30,7 @@ auth.onAuthStateChanged((user) => {
 
     createUserWithEmailAndPassword(auth, values.email, values.password)
       .then(() => {
-        createUser();
+
         setDoc(doc(db, "users", uid), {
           username,
           email: useremail,
@@ -45,17 +48,17 @@ auth.onAuthStateChanged((user) => {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
-  async function createUser() {
+  // async function createUser() {
 
 
-    const docRef = await addDoc(collection(db, "users"), {
-      first: "Ada",
-      last: "Lovelace",
-      born: 1815
-    });
-    console.log("Document written with ID: ", docRef.id);
+  //   const docRef = await addDoc(collection(db, "users"), {
+  //     first: "Ada",
+  //     last: "Lovelace",
+  //     born: 1815
+  //   });
+  //   console.log("Document written with ID: ", docRef.id);
 
-  }
+  // }
 
 
   return (

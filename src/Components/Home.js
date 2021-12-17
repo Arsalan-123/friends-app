@@ -7,15 +7,16 @@ import Navs from './Navs';
 import { Upload, message, Button } from 'antd';
 import { ProfileFilled, UploadOutlined } from '@ant-design/icons';
 import { Form, Input, Checkbox } from 'antd';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import Profilebtn from "./Profilebtn"
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "./Firebase"
 import { getDownloadURL, uploadBytesResumable } from '@firebase/storage';
 import { ref } from "@firebase/storage";
-import {  getDocFromCache } from "firebase/firestore";
+import { getDocFromCache } from "firebase/firestore";
+import { onSnapshot } from "firebase/firestore";
 
 
 
@@ -31,7 +32,7 @@ const Home = () => {
 
 
   const onFinish = (values) => {
-  
+
     console.log('Success:', values);
   };
 
@@ -48,30 +49,45 @@ const Home = () => {
     return e && e.fileList;
   };
 
-  const [title,settitle] = useState("");
-  const [description, setdescription] = useState(""); 
+  const [title, settitle] = useState("");
+  const [description, setdescription] = useState("");
   const [image, setImage] = useState(null)
   const [url, setUrl] = useState('')
+  const [data, setData] = useState('')
+  const [already, setalready] = useState(false)
+
+
+
 
   var uid = ''
   auth.onAuthStateChanged((user) => {
-    uid = user.uid
+    if (user) {
+      uid = user.uid
       console.log(uid);
+      onSnapshot(doc(db, "users", uid), (doc) => {
+        console.log("Current data: ", doc.data());
+        if (!already) {
+          setData(doc.data())
+          setalready(true)
+        }
+      });
     }
-  ) 
-
-
-
-  async function postSave() {
-                                                                       
-  await setDoc(doc(db, "users", uid), {
-    title,
-    description
-    
-    
-  });
   }
+  )
 
+  useEffect(() => {
+
+
+  }, [])
+
+  async function postSave(url) {
+
+    await setDoc(doc(db, "post", uid), {
+      title,
+      description,
+      imageUrl: url
+    });
+  }
 
   const handleChange = e => {
     if (e.target.files[0]) {
@@ -81,16 +97,11 @@ const Home = () => {
 
   };
   const handleUpload = () => {
-  
-    
-
-
-
 
     const storageRef = ref(storage, `images/${image.name}`)
 
     const uploadTask = uploadBytesResumable(storageRef, image);
-    
+
 
 
     uploadTask.on(
@@ -100,62 +111,44 @@ const Home = () => {
         console.log(error);
       },
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((
-
-
-
-
-          
-        ) => { console.log('image uploaded', url); setUrl(url)})
+        getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+           console.log('image uploaded', url); postSave(url) 
+          })
       }
 
     )
-     
-
-};
 
 
+  };
 
 
 
-const postRef = doc(db, "post", uid);
-
-// Get a document, forcing the SDK to fetch from the offline cache.
-try {
-  const doc = getDocFromCache(postRef);
-
-  // Document was found in the cache. If no cached document exists,
-  // an error will be returned to the 'catch' block below.
-  console.log("Cached document data:", doc.getDocFromCache());
-} catch (e) {
-  console.log("Error getting cached document:", e);
-}
 
 
 
   return (
-    
+
     <div >
       <div>  <Navs />    </div>
-      
-      <div>
 
       <div>
 
-
-      </div>
-
-<div >
-
-<div
->
-<Profilebtn/>
-<Avatar   size={75} icon={<UserOutlined  /> }  />
-</div>
+        <div>
 
 
-</div>
-    
+        </div>
+
+        <div >
+
+          <div
+          >
+            <Profilebtn />
+            <Avatar size={75} icon={<UserOutlined />} />
+          </div>
+
+
+        </div>
+
 
 
 
@@ -166,7 +159,7 @@ try {
 
 
       <div className="homepage">
-        <h1>User Name</h1>
+        <h1>{data.username}</h1>
 
         <Form
           name="basic"
@@ -204,8 +197,8 @@ try {
               maxCount={1}>
               <Button icon={<UploadOutlined />}>Click to upload</Button>
             </Upload>, */}
-            <input type="file" onChange={handleChange}/>            <Form.Item>
-              <Button className="btn" type="primary" htmlType="submit" onChange={postSave}  onClick={ handleUpload}>
+            <input type="file" onChange={handleChange} />            <Form.Item>
+              <Button className="btn" type="primary" htmlType="submit" onClick={handleUpload}>
                 Post
               </Button>
 
@@ -237,6 +230,6 @@ try {
     </div>
 
   )
-          }
+}
 
 export default Home;
