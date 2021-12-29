@@ -25,10 +25,10 @@ margin-top: 60px;
 
 }
 h1{
-  margin-top: 25px;
+  /* margin-top: 25px;
   text-align: center;
   margin-bottom: 25px;
-  font-family: unset;
+  font-family: unset; */
 }
 .formset{
   border: solid ;

@@ -106,7 +106,7 @@ const SignUp = () => {
             SignUp
           </Button>&nbsp;&nbsp;&nbsp;&nbsp;
           <Button className="btn" type="primary" htmlType="submit">
-            <Link to='Login'>LogIn</Link>
+            <Link to='/'>LogIn</Link>
           </Button>
         </Form.Item>
       </Form>
