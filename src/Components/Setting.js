@@ -9,6 +9,9 @@ import { useState } from 'react';
 import { auth, db } from "./Firebase"
 import { collection, addDoc } from "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
+import Profilebtn from "./Profilebtn";
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 
 
@@ -87,9 +90,17 @@ const Setting = () => {
   return (
     <div>
       <div>  <Navs /> </div>
+
+      
       <div className="settingform"  >
 
         <h1> General Account Settings </h1>
+
+
+        <div  className='profilePic'>
+            <Profilebtn />
+            <Avatar size={75} icon={<UserOutlined />} />
+          </div>
 
 
         <Form

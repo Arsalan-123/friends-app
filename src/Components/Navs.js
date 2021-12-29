@@ -29,6 +29,7 @@ function Navs() {
                     <Menu.Item key="4"><Link to="/search">Search</Link></Menu.Item>
                     <Menu.Item key="5" onClick={logout}>  Logout  </Menu.Item>
                     <Menu.Item key="6">  <Searchbtn /></Menu.Item>
+                    
                 </Menu>
 
             </Header>

@@ -32,9 +32,9 @@ const SignUp = () => {
       .then(() => {
 
         setDoc(doc(db, "users", uid), {
-          username,
+          username: username.toLocaleLowerCase(),
           email: useremail,
-          password: userpassword
+          uid: uid,
         })
         navigate("/home");
       });

@@ -9,6 +9,7 @@ import Dashboard from "../Dashboard";
 import Searchbtn from "../Searchbtn";
 import Error from '../Error';
 import Search from "../Search/Search"
+import Otheruser from '../OthersUser/Otheruser';
 
 const IfLog = () => {
     return (
@@ -18,6 +19,7 @@ const IfLog = () => {
             <Route exact path='dashboard' element={<Dashboard />} />
             <Route exact path='searchbtn' element={<Searchbtn />} />
             <Route exact path='search' element={<Search />} />
+            <Route exact path='/:uid' element={<Otheruser />} />
             <Route path='*' element={<Error />} />
         </Routes>
 

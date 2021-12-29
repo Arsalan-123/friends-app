@@ -7,9 +7,7 @@ import Navs from "./Navs";
 import { Upload, message, Button } from "antd";
 import { ProfileFilled, UploadOutlined } from "@ant-design/icons";
 import { Form, Input, Checkbox } from "antd";
-import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-import Profilebtn from "./Profilebtn";
+
 import { doc, setDoc, collection, query, where, onSnapshot } from "firebase/firestore";
 import { auth, db, storage } from "./Firebase";
 import { ref, getDownloadURL, uploadBytesResumable } from "@firebase/storage";
@@ -128,15 +126,12 @@ const Home = () => {
       <div>
         <div></div>
         <div>
-          <div>
-            <Profilebtn />
-            <Avatar size={75} icon={<UserOutlined />} />
-          </div>
+          
         </div>
       </div>
 
       <div className="homepage">
-        {/* <h1>{data.username}</h1> */}
+        <h1>{data.username}</h1>
         <Form
           name="basic"
           labelCol={{ span: 10 }}
