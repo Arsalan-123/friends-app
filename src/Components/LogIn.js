@@ -112,6 +112,9 @@ const Login = () => {
           <Button onClick={handleLogin} className="btn" type="primary" htmlType="submit">
             Log In
           </Button>
+          <Button className="btn" type="primary" htmlType="submit">
+            <Link to='/SignUp'>SignUp</Link>
+          </Button>
         </Form.Item>
       </Form>
     </div>
