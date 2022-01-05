@@ -19,10 +19,10 @@ function Navs() {
 
     
     return (
-        <div>
-            <Header style={{ zIndex: 1, width: '100%' }}>
+        <div     >
+            <Header style={{ zIndex: 1, width: '100%'  }}  style={{background: "#00bfff"}} >
                 <div className="logo" />
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}   style={{background: "#00bfff"}}  >
                     <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
                     <Menu.Item key="2"> <Link to="../setting"> Setting </Link>   </Menu.Item>
                     <Menu.Item key="3">  About  </Menu.Item>
